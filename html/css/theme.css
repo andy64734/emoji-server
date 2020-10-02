@@ -12,7 +12,7 @@ p {
 }
 
 #background-image {
-	background: url("/emojis/my-hero-academia/izuku_geeking-out_0.png");
+	background: url("/bg.png");
 	background-position: center;
 	filter: blur(8px);
 	-webkit-filter: blur(8px);
