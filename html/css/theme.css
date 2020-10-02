@@ -1,0 +1,139 @@
+body, html {
+	height: 100%;
+}
+
+body {
+	color: #fff;
+	font-family: Open Sans,Verdana;
+}
+
+p {
+	text-align: left;
+}
+
+#background-image {
+	background: url("/emojis/my-hero-academia/izuku_geeking-out_0.png");
+	background-position: center;
+	filter: blur(8px);
+	-webkit-filter: blur(8px);
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+	position: fixed;
+}	
+
+h1 {
+	font-weight: 400;
+	border-bottom: 1px solid;
+}
+
+.margin-box
+{
+	padding: 15px;
+	width: 100%;
+	min-width: 750px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+#main-box {
+	position: relative;
+	margin: 0px auto;
+	display: block;
+	width: 500px;
+	text-align: center;
+	background: rgba(0,0,0,0.7);
+	border-radius: 10px;
+	padding: 15px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+
+}
+
+.home-box {
+	height: 350px;
+}
+
+table {
+	width: 100%;
+	table-layout: fixed;
+}
+
+.home-buttons {
+	position: absolute;
+	bottom: 30px;
+	left: 0px;
+}
+
+td
+{
+	padding-top: 10px;
+}
+
+input
+{
+	font-family: inherit;
+	font-size: 16px;
+}
+
+.button {
+	background-color: blue;
+	background-image: linear-gradient(blue, #008);
+	padding: 10px 3px;
+	display: inline-block;
+	font-family: inherit;
+	font-size: inherit;
+	border-width: 0px;
+	cursor: pointer;
+	/*-webkit-appearance: none;*/
+}
+
+.button-text
+{
+	color: #fff;
+	text-decoration: none;
+}
+
+.button:hover {
+	background-image: none;
+	background-color: #fff;
+	background-image: linear-gradient(#fff,#888);
+}
+
+.button-text:hover {
+	color: blue;
+}
+
+.red {
+	background-color: #f00;
+	background-image: linear-gradient(red, #800);
+}
+
+.red:hover {
+	color: #f00;
+}
+
+.green {
+	background-color: #0f0;
+	background-image: linear-gradient(#0f0, #080);
+}
+
+.green:hover {
+	color: #0f0;
+}
+
+.thumbnail {
+	width: auto;
+	height: auto;
+	max-width: 150px;
+	max-height: 150px;
+}
+
+.thumbnail-holder {
+	height: 150px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
