@@ -2,7 +2,7 @@
 The implementation of an emoji server, written by andy64734 and LanHikari22. You are welcome to use and distribute the contents of this repository as much as you like as long as you don't strip our credit from this project.
 
 ## Setup
-To install the emoji server, you can clone this repository of download a ZIP of the repository. This server has been tested with the Apache web server, and has been only tested on a few Linux distros.
+To install the emoji server, you can clone this repository or download a ZIP of the repository. This server has been tested with the Apache web server, and has been only tested on a few Linux distros.
 
 To install the client side files, copy the html folder into wherever Apache would look for (I suggest /var/www/html for Linux users).
 
