@@ -8,7 +8,7 @@ Welcome to the Emoji Server! Hosted by LanHikari22 and Farawla (andy64734).
 Here, you can find pictures of various characters from video games and animes 
 showing different facial expressions, intended as more entertaining 
 replacements for actual emojis. If you have any ideas for new emojis to add to 
-the server, and you knoweither Lan or Farawla personally, you can contact
+the server, and you know either Lan or Farawla personally, you can contact
 either of them. You just might see your emojis posted here.
 
 This server can be easily copied to your local system using a Git repository,
