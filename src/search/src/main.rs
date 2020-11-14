@@ -11,10 +11,17 @@ use dict::*;
 use json;
 use json::JsonValue;
 
+#[derive (PartialEq, Copy, Clone)]
+enum EmojiType {
+	GIF,
+	NonGIF,
+	Any
+}
+
 fn main() {
 	println!("Content-Type: application/json\n");
 	
-	let emoji_root = Path::new("/var/www/html/emojis");
+	let emoji_root = Path::new("../emojis");
 	
 	match env::set_current_dir(&emoji_root) {
 		Err(e) => {println!("Error: {:?}", e); return},
@@ -35,7 +42,9 @@ fn main() {
 	}
 
 	let gif = get_query_from_url(&my_url, "gif");
-	let emojis = get_emoji_dict(query.as_str(), emoji_root, &gif);
+	let emoji_type = str_to_emoji_type(&gif);
+
+	let emojis = get_emoji_dict(query.as_str(), emoji_root, emoji_type);
 	let mut json_str = json::JsonValue::new_object();
 
 	for show in emojis.unwrap() {
@@ -68,9 +77,8 @@ fn get_query_from_url(url_str: &str, key: &str) -> String{
 	}
 }
 
-fn get_emoji_dict(search: &str, path: &Path, gif: &str) -> Result<Dict<Vec<String>>, Error> {
+fn get_emoji_dict(search: &str, path: &Path, emoji_type: EmojiType) -> Result<Dict<Vec<String>>, Error> {
 	let dir_listing = fs::read_dir(&path)?;
-	// let mut emojis: Vec<String> = vec![];
 	let mut dict = Dict::<Vec<String>>::new();
 
 	for item in dir_listing {
@@ -81,30 +89,28 @@ fn get_emoji_dict(search: &str, path: &Path, gif: &str) -> Result<Dict<Vec<Strin
 			continue;
 		}
 
-		// emojis.append(&mut get_emojis_in_show(search, item_path_buf.as_path())?);
-		
 		let folder_name = item_path_buf.as_path().file_name().unwrap().
 							to_str().unwrap();
-		let emojis_in_show = get_emojis_in_show(search, item_path_buf.as_path(), gif)?;
+		let emojis_in_show = get_emojis_in_show(search, item_path_buf.as_path(), emoji_type)?;
 		
 		dict.add(folder_name.to_string(), emojis_in_show);
 	}
 	Ok(dict)
 }
 
-fn get_emojis_in_show(search: &str, path: &Path, gif: &str) -> Result<Vec<String>, Error> {
+fn get_emojis_in_show(search: &str, path: &Path, emoji_type: EmojiType) -> Result<Vec<String>, Error> {
 	let dir_listing = fs::read_dir(&path)?;
 	let mut emojis: Vec<String> = vec![];
 	let folder_name = path.file_name().unwrap().to_str().unwrap();
 
-	if gif != "yes"
+	if emoji_type != EmojiType::GIF
 	{
 		for item in dir_listing {
 			check_dir_item(search, folder_name, &item.unwrap(), &mut emojis);
 		}
 	}
 	
-	if gif == "no"
+	if emoji_type == EmojiType::NonGIF
 	{
 		return Ok(emojis);
 	}
@@ -152,4 +158,13 @@ fn does_emoji_match(search: &str, folder: &str, file: &str) -> bool {
 	
 	search_words.all(|x: &str|
 		folder_words.any(|y: &str| x == y) || file_words.any(|y: &str| x == y)) 
+}
+
+fn str_to_emoji_type(str_to_convert: &str) -> EmojiType
+{
+	match str_to_convert {
+		"yes" => EmojiType::GIF,
+		"no" => EmojiType::NonGIF,
+		_ => EmojiType::Any
+	}
 }

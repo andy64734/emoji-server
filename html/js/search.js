@@ -3,7 +3,7 @@ window.onload = function()
 	resTable = document.getElementById("results-table");
 
 	var query = getUrlParam("query");
-  var gif = getUrlParam("gif");
+	var gif = getUrlParam("gif");
 	makeAsyncRequest("/cgi-bin/search?query=" + query + "&gif=" + gif, handleJsonResponse);
 }
 
