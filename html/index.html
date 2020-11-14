@@ -17,11 +17,22 @@
 			<tr>
 				<td colspan="2">
 					<form action="/search.html">
-					<input type="text" name="query" style="width: 80%; height: 36px"
-						placeholder="Type your desire here" />
-					<button class="button-text button green" type="submit">
-						Search
-					</button>
+						<div>
+							<input type="text" name="query" style="width: 80%; height: 36px"
+								placeholder="Type your desire here" />
+							<button class="button-text button green" type="submit">
+								Search
+							</button>
+						</div>
+						<div>
+							<label>Emoji type: </label>
+							<input type="radio" id="gifYes" name="gif" value="yes" />
+							<label for="gifYes">GIF</label>
+							<input type="radio" id="gifNo" name="gif" value="no" />
+							<label for="gifNo">Non-GIF</label>
+							<input type="radio" id="gifAny" name="gif" value="any" checked />
+							<label for="gifAny">Any</label>
+						</div>
 					</form>
 				</td>
 			<tr>
