@@ -14,7 +14,7 @@ use json::JsonValue;
 fn main() {
 	println!("Content-Type: application/json\n");
 	
-	let emoji_root = Path::new("../emojis");
+	let emoji_root = Path::new("/var/www/html/emojis");
 	
 	match env::set_current_dir(&emoji_root) {
 		Err(e) => {println!("Error: {:?}", e); return},
@@ -28,8 +28,14 @@ fn main() {
 		Err(e) => {println!("Error: {:?}", e); return},
 	}
 	
-	let query = get_query_from_url(&my_url);
-	let emojis = get_emoji_dict(query.as_str(), emoji_root);
+	let query = get_query_from_url(&my_url, "query");
+	if query == ""
+	{
+		println!("{:?}", "{}");
+	}
+
+	let gif = get_query_from_url(&my_url, "gif");
+	let emojis = get_emoji_dict(query.as_str(), emoji_root, &gif);
 	let mut json_str = json::JsonValue::new_object();
 
 	for show in emojis.unwrap() {
@@ -45,7 +51,7 @@ fn main() {
 	println!("{}", json_str.dump());
 }
 
-fn get_query_from_url(url_str: &str) -> String{
+fn get_query_from_url(url_str: &str, key: &str) -> String{
 	let mut url_obj: Url = Url::parse("http://dummy").unwrap();
 	
 	match url_obj.join(url_str) {
@@ -55,17 +61,16 @@ fn get_query_from_url(url_str: &str) -> String{
 			return String::new()} 
 	}
 
-	match url_obj.query_pairs().find(|x| {x.0 == "query"}) {
+	match url_obj.query_pairs().find(|x| {x.0 == key}) {
 		Some(s) => s.1.to_string(),
 		None => {
-			println!("Couldn't find anything!"); 
 			String::new()}
 	}
 }
 
-fn get_emoji_dict(search: &str, path: &Path) -> Result<Dict<Vec<String>>, Error> {
+fn get_emoji_dict(search: &str, path: &Path, gif: &str) -> Result<Dict<Vec<String>>, Error> {
 	let dir_listing = fs::read_dir(&path)?;
-	let mut emojis: Vec<String> = vec![];
+	// let mut emojis: Vec<String> = vec![];
 	let mut dict = Dict::<Vec<String>>::new();
 
 	for item in dir_listing {
@@ -76,26 +81,34 @@ fn get_emoji_dict(search: &str, path: &Path) -> Result<Dict<Vec<String>>, Error>
 			continue;
 		}
 
-		emojis.append(&mut get_emojis_in_show(search, item_path_buf.as_path())?);
+		// emojis.append(&mut get_emojis_in_show(search, item_path_buf.as_path())?);
 		
 		let folder_name = item_path_buf.as_path().file_name().unwrap().
 							to_str().unwrap();
-		let emojis_in_show = get_emojis_in_show(search, item_path_buf.as_path())?;
+		let emojis_in_show = get_emojis_in_show(search, item_path_buf.as_path(), gif)?;
 		
 		dict.add(folder_name.to_string(), emojis_in_show);
 	}
 	Ok(dict)
 }
 
-fn get_emojis_in_show(search: &str, path: &Path) -> Result<Vec<String>, Error> {
+fn get_emojis_in_show(search: &str, path: &Path, gif: &str) -> Result<Vec<String>, Error> {
 	let dir_listing = fs::read_dir(&path)?;
 	let mut emojis: Vec<String> = vec![];
 	let folder_name = path.file_name().unwrap().to_str().unwrap();
 
-	for item in dir_listing {
-		check_dir_item(search, folder_name, &item.unwrap(), &mut emojis);
+	if gif != "yes"
+	{
+		for item in dir_listing {
+			check_dir_item(search, folder_name, &item.unwrap(), &mut emojis);
+		}
 	}
 	
+	if gif == "no"
+	{
+		return Ok(emojis);
+	}
+
 	let gif_listing = fs::read_dir(path.join("gifs"));
 	
 	match gif_listing{

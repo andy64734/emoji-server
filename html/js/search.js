@@ -3,7 +3,8 @@ window.onload = function()
 	resTable = document.getElementById("results-table");
 
 	var query = getUrlParam("query");
-	makeAsyncRequest("/cgi-bin/search?query=" + query, handleJsonResponse);
+  var gif = getUrlParam("gif");
+	makeAsyncRequest("/cgi-bin/search?query=" + query + "&gif=" + gif, handleJsonResponse);
 }
 
 var makeAsyncRequest = function makeAsyncRequest(url, callback)
