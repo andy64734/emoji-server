@@ -160,8 +160,7 @@ fn does_emoji_match(search: &str, folder: &str, file: &str) -> bool {
 		folder_words.any(|y: &str| x == y) || file_words.any(|y: &str| x == y)) 
 }
 
-fn str_to_emoji_type(str_to_convert: &str) -> EmojiType
-{
+fn str_to_emoji_type(str_to_convert: &str) -> EmojiType {
 	match str_to_convert {
 		"yes" => EmojiType::GIF,
 		"no" => EmojiType::NonGIF,
