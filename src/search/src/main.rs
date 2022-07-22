@@ -152,12 +152,13 @@ fn does_emoji_match(search: &str, folder: &str, file: &str) -> bool {
 	let lcase_search = search.to_string().to_lowercase();
 	let symbol_filter = Regex::new(r"[_+\- ]").unwrap();
 	
-	let mut folder_words = symbol_filter.split(lcase_folder.as_str());
-	let mut file_words = symbol_filter.split(lcase_file.as_str());
 	let mut search_words = symbol_filter.split(lcase_search.as_str());
 	
-	search_words.all(|x: &str|
-		folder_words.any(|y: &str| x == y) || file_words.any(|y: &str| x == y)) 
+	search_words.all(|x: &str| {
+		let mut folder_words = symbol_filter.split(lcase_folder.as_str());
+		let mut file_words = symbol_filter.split(lcase_file.as_str());
+		folder_words.any(|y: &str| x == y) || file_words.any(|y: &str| x == y)
+	})
 }
 
 fn str_to_emoji_type(str_to_convert: &str) -> EmojiType {
